@@ -1,0 +1,94 @@
+	   Lista de Tokens
+
+1.a)
+Lexema		Classe		Linha
+{		SE		1
+int		PR		1
+id		id		1
+int		PR		1
+area		id		1
+}		SE		1
+id		id		2
+:=		SE		2
+10		cte_int		2
+area		id		3
+:=		SE		3
+id		id		3
+*		SE		3
+id		id		3
+
+=================//==================
+
+b)
+Lexema		Classe		Linha
+{		SE		1
+int		PR		1
+x		id		1
+int		PR		1
+y		id		1
+}		SE		1
+y		id		2
+:=		SE		2
+(		SE		2
+x		id		2
++		SE		2
+3		cte_int		2
+)		SE		2
+*		SE		2
+(		SE		2
+x		id		2
+-		SE		2
+3		cte_int		2
+)		SE		2
+
+=================//==================
+
+c)
+Lexema		Classe		Linha
+{		SE		1
+int		PR		1
+x		id		1
+float		PR		1
+y		id		1
+}		SE		1
+x		id		2
+:=		SE		2
+1		cte_int		2
+y		id		3
+:=		SE		3
+1,0		cte_real	3
+y		id		4
+:=		SE		4
+x		id		4
++		SE		4
+y		id		4
+*		SE		4
+4		cte_int		4
+
+=================//==================
+
+d)
+Lexema		Classe		Linha
+{		SE		1
+int		PR		1
+x		id		1
+int		PR		1
+y		id		1
+float		PR		1
+m		id		1
+}		SE		1
+x		id		2
+:=		SE		2
+10		cte_int		2
+y		id		3
+:=		SE		3
+9		cte_int		3
+m		id		4
+:=		SE		4
+(		SE		4
+x		id		4
++		SE		4
+y		id		4
+)		SE		4
+/		SE		4
+2		cte_int		4
