@@ -1,0 +1,63 @@
+2.a)
+Código corrigido
+{ float y float x }
+x := 1,0
+z := x + 1
+
+Erros
+linha 2: , símbolo inválido (Léxico)
+linha 1: encontrado x, esperado float int } (Sintático)
+linha 3: z não declarado (Semântico)
+
+b)
+Código corrigido
+{ int x }
+x := 1
+
+Erros
+linha 2: ; símbolo inválido (Léxico)
+linha 1: encontrado z, esperado { (Sintático)
+linha 2: tipos incompatíveis na atribuição (Semântico)
+
+c)
+Código corrigido
+{ int x float y }
+x := 1
+x := ( x + 4 * 4 )
+y := x / 5
+
+Erros
+linha 1: Y símbolo inválido (Léxico)
+linha 4: encontrado x, esperado ) (Sintático)
+linha 4: tipos incompatíveis na atribuição (Semântico)
+
+d)
+Código corrigido
+{ float y int x }
+x := 1
+
+Erros
+linha 1: , símbolo inválido (Léxico)
+linha 2: ; símbolo inválido (Léxico)
+linha 1: encontrado float, esperado { (Sintático)
+linha 1: encontrado x, esperado float int } (Sintático)
+
+e)
+Código corrigido
+{ int y }
+y := y + 1
+
+Erros
+linha 1: % símbolo inválido (Léxico)
+linha 1: int encontrado, esperado identificador (Sintático)
+linha 2: eof encontrado, esperado identificador cte_int cte_real (Sintático)
+linha 2: m não declarado (Semântico)
+
+3.
+linha 1: ; símbolo inválido (Léxico)
+linha 1: comentário não finalizado (Léxico)
+linha 1: int encontrado, esperado INT FLOAT } (Sintático)
+linha 2: eof encontrado, esperado identificador cte_int cte_real (Sintático)
+linha 1: i já declarado (Semântico)
+linha 2: m não declarado (Semântico)
+linha 2: J não declarado (Semântico)
