@@ -1,0 +1,24 @@
+Lista 2
+
+9. Definições Regulares Auxiliares
+usuário: [A-Za-z0-9_]+ ("."[A-Za-z0-9_]+)*
+rótulo: [a-z][a-z]+
+domínio: rótulo ("." rótulo)*
+
+Token
+e-mail: usuário@domínio
+
+10. Definições Regulares Auxiliares
+dígito: [0-9]
+códigoPais: dígito dígito dígito
+códigoNacional: [1-9] dígito
+númeroAssinante: dígito dígito dígito dígito dígito dígito dígito dígito dígito?
+
+Token
+plano: 00 códigoPais códigoNacional númeroAssinante | 0 códigoNacional númeroAssinante | númeroAssinante
+
+11.a) Token
+comentário: "/""/"[^\n]*
+
+b) Token
+bloco: "(""*" ("*"+ [^")""*"] | [^"*"])* "*"")"
