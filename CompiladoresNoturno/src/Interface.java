@@ -31,6 +31,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
+import codigoLexicoSintatico.*;
+
 public class Interface extends JFrame {
 
 	private JPanel contentPane;
@@ -248,13 +250,53 @@ public class Interface extends JFrame {
             	btnEquipe.doClick();  
             }
         });
+        
 		JButton btnCompilar = new JButton("Compilar (F7)");
 		btnCompilar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (!txtAreaMsg.getText().isEmpty()) {
-					txtAreaMsg.append("\ncompilação de programas ainda não foi implementada");
-				}else {
-					txtAreaMsg.setText("compilação de programas ainda não foi implementada");
+				
+				Lexico lexico = new Lexico();
+				lexico.setInput(textArea.getText());
+				try {
+					Token t = null;
+					while ((t = lexico.nextToken()) != null) {
+						System.out.println(t.getLexeme());
+
+						// só escreve o lexema, necessário escrever t.getId (), t.getPosition()
+
+						// t.getId () - retorna o identificador da classe. Olhar Constants.java e
+						// adaptar, pois
+						// deve ser apresentada a classe por extenso
+						// t.getPosition () - retorna a posição inicial do lexema no editor, necessário
+						// adaptar
+						// para mostrar a linha
+
+						// esse código apresenta os tokens enquanto não ocorrer erro
+						// no entanto, os tokens devem ser apresentados SÓ se não ocorrer erro,
+						// necessário adaptar
+						// para atender o que foi solicitado
+
+						if (!txtAreaMsg.getText().isEmpty()) {
+							txtAreaMsg.append("\nEntramos sem Erro");
+						} else {
+							txtAreaMsg.setText("Entramos sem Erro");
+						}
+					}
+				} catch (LexicalError ex) { // tratamento de erros
+					System.out.println(ex.getMessage() + " em " + ex.getPosition());
+
+					// e.getMessage() - retorna a mensagem de erro de SCANNER_ERRO (olhar
+					// ScannerConstants.java
+					// e adaptar conforme o enunciado da parte 2)
+					// e.getPosition() - retorna a posição inicial do erro, tem que adaptar para
+					// mostrar a
+					// linha
+
+					if (!txtAreaMsg.getText().isEmpty()) {
+						txtAreaMsg.append("\nEntramos Erro");
+					} else {
+						txtAreaMsg.setText("Entramos Erro");
+					}
 				}
 			}
 		});
