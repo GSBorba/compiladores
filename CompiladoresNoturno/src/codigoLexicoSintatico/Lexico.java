@@ -4,6 +4,20 @@ public class Lexico implements Constants
 {
     private int position;
     private String input;
+    private int linha = 1;
+    private String lexema;
+    
+    public String getLexema() {
+    	return lexema;
+    }
+    
+    private void setLinha() {
+    	linha++;
+    }
+    
+    public int getLinha() {
+    	return linha;
+    }
 
     public Lexico()
     {
@@ -30,6 +44,10 @@ public class Lexico implements Constants
     {
         if ( ! hasInput() )
             return null;
+        
+        if(input.charAt(position) == '\n') {
+        	setLinha();
+        }
 
         int start = position;
 
@@ -67,6 +85,7 @@ public class Lexico implements Constants
         else
         {
             String lexeme = input.substring(start, end);
+            lexema = lexeme;
             token = lookupToken(token, lexeme);
             return new Token(token, lexeme, start);
         }

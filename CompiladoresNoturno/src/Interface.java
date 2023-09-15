@@ -257,6 +257,8 @@ public class Interface extends JFrame {
 				
 				Lexico lexico = new Lexico();
 				lexico.setInput(textArea.getText());
+				
+				String mensagem = "Linha    Classe                       Lexema";
 				try {
 					Token t = null;
 					while ((t = lexico.nextToken()) != null) {
@@ -275,15 +277,18 @@ public class Interface extends JFrame {
 						// no entanto, os tokens devem ser apresentados SÓ se não ocorrer erro,
 						// necessário adaptar
 						// para atender o que foi solicitado
-
-						if (!txtAreaMsg.getText().isEmpty()) {
-							txtAreaMsg.append("\nEntramos sem Erro");
-						} else {
-							txtAreaMsg.setText("Entramos sem Erro");
+						
+						if(t.getId() == 2) {
+							throw new Exception("Linha " + lexico.getLinha() + ": " + t.getLexeme() + " palavra reservada inválida");
 						}
+						
+						mensagem += "\n" + lexico.getLinha() + "            " + "Classe" + "                       " + t.getLexeme();
 					}
+					if (!txtAreaMsg.getText().isEmpty()) {
+						txtAreaMsg.append("\n");
+					}
+					txtAreaMsg.append(mensagem + "\nprograma compilado com sucesso");
 				} catch (LexicalError ex) { // tratamento de erros
-					System.out.println(ex.getMessage() + " em " + ex.getPosition());
 
 					// e.getMessage() - retorna a mensagem de erro de SCANNER_ERRO (olhar
 					// ScannerConstants.java
@@ -292,11 +297,9 @@ public class Interface extends JFrame {
 					// mostrar a
 					// linha
 
-					if (!txtAreaMsg.getText().isEmpty()) {
-						txtAreaMsg.append("\nEntramos Erro");
-					} else {
-						txtAreaMsg.setText("Entramos Erro");
-					}
+					txtAreaMsg.setText("Linha " + lexico.getLinha() + ": " + lexico.getLexema() + " " + ex.getMessage());
+				} catch (Exception exe) {
+					txtAreaMsg.setText(exe.getMessage());
 				}
 			}
 		});
