@@ -32,4 +32,22 @@ public class Token
     {
         return id+" ( "+lexeme+" ) @ "+position;
     };
+    
+    public String getClasse() {
+    	if (this.getId() == 3) {
+			return "Identificador";
+		}else if (this.getId() == 4) {
+			return "Constante _Int";
+		}else if (this.getId() == 5) {
+			return "Constante _Float";
+		}else if (this.getId() == 6) {
+			return "Constante _String";
+		}else if (this.getId() >= 7 && this.getId() <= 17) {
+			return "Palavra Reservada";
+		}else if (this.getId() >= 18 && this.getId() <= 36) {
+			return "Símbolo Especial";
+		}else {
+			return "Inválido";
+		}
+    }
 }

@@ -282,7 +282,7 @@ public class Interface extends JFrame {
 							throw new Exception("Linha " + lexico.getLinha() + ": " + t.getLexeme() + " palavra reservada inválida");
 						}
 						
-						mensagem += "\n" + lexico.getLinha() + "            " + "Classe" + "                       " + t.getLexeme();
+						mensagem += "\n" + lexico.getLinha() + "            " + t.getClasse() + "                       " + t.getLexeme();
 					}
 					if (!txtAreaMsg.getText().isEmpty()) {
 						txtAreaMsg.append("\n");
