@@ -287,7 +287,7 @@ public class Interface extends JFrame {
 					if (!txtAreaMsg.getText().isEmpty()) {
 						txtAreaMsg.append("\n");
 					}
-					txtAreaMsg.append(mensagem + "\nprograma compilado com sucesso");
+					txtAreaMsg.append(mensagem + "\n\nprograma compilado com sucesso");
 				} catch (LexicalError ex) { // tratamento de erros
 
 					// e.getMessage() - retorna a mensagem de erro de SCANNER_ERRO (olhar
@@ -296,8 +296,13 @@ public class Interface extends JFrame {
 					// e.getPosition() - retorna a posição inicial do erro, tem que adaptar para
 					// mostrar a
 					// linha
-
-					txtAreaMsg.setText("Linha " + lexico.getLinha() + ": " + lexico.getLexema() + " " + ex.getMessage());
+					
+					//Gambiarra abaixo :)
+					if(ex.getMessage() == "constante_string invalida" || ex.getMessage() == "comentario de bloco invalido ou nao finalizado") {
+						txtAreaMsg.setText("Linha " + lexico.getLinha() + ": " +  ex.getMessage());
+					}else {
+						txtAreaMsg.setText("Linha " + lexico.getLinha() + ": " + lexico.getLexema() + " " + ex.getMessage());
+					}
 				} catch (Exception exe) {
 					txtAreaMsg.setText(exe.getMessage());
 				}

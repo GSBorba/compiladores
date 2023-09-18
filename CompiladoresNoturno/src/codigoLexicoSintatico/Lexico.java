@@ -6,6 +6,7 @@ public class Lexico implements Constants
     private String input;
     private int linha = 1;
     private String lexema;
+    private int oldPosition = -1;
     
     public String getLexema() {
     	return lexema;
@@ -44,10 +45,6 @@ public class Lexico implements Constants
     {
         if ( ! hasInput() )
             return null;
-        
-        if(input.charAt(position) == '\n') {
-        	setLinha();
-        }
 
         int start = position;
 
@@ -150,8 +147,14 @@ public class Lexico implements Constants
 
     private char nextChar()
     {
-        if (hasInput())
+        if (hasInput()) {
+        	//gambiarra q não funciona :)
+        	if(input.charAt(position) == '\n' && oldPosition != position) {
+        		oldPosition = position;
+            	setLinha();
+            }
             return input.charAt(position++);
+        }
         else
             return (char) -1;
     }
