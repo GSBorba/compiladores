@@ -1,11 +1,15 @@
 #Options
 GenerateScanner = true
-GenerateParser = false
+GenerateParser = true
 Language = Java
 ScannerName = Lexico
+ParserName = Sintatico
+SemanticName = Semantico
+Package = codigoLexicoSintatico
 ScannerCaseSensitive = true
 ScannerTable = Compact
-Input = String
+Input = Stream
+Parser = SLR
 #RegularDefinitions
 prefixo: "_" (i|f|b|s)
 
@@ -70,3 +74,66 @@ while = reservada: "while"
 //reconhecer e ignorar comentários
 :! "#"[^\n]*
 :! "["[^\[\]]*"]"
+#NonTerminals
+<formaGeral>
+
+<listaInstrucoes>
+<instrucao>
+<declaracaoConstate>
+<listaIdentificadores>
+<valor>
+<declaracaoVariavel>
+<comando>
+<atribuicao>
+<entradaDados>
+<saidaDados>
+<selecao>
+<repeticao>
+<listaEntrada>
+<listaComandos>
+<expressao>
+<listaExpressoes>
+
+<listaInstrucoes1>
+<listaIdentificadores1>
+<listaEntrada1>
+<listaExpressoes1>
+<selecao1>
+<listaComandos1>
+#Grammar
+<formaGeral> ::= fun main "{" <listaInstrucoes> "}" ;
+
+<listaInstrucoes> ::= <instrucao> ";" <listaInstrucoes1> ; 
+<listaInstrucoes1> ::= <listaInstrucoes> | î ;
+
+<instrucao> ::= <declaracaoConstate>
+	     | <declaracaoVariavel>
+	     | <comando> ;
+
+<declaracaoConstate> ::= <listaIdentificadores> ":" <valor> ;
+
+<listaIdentificadores> ::= identificador <listaIdentificadores1> ;
+<listaIdentificadores1> ::= "," <listaIdentificadores> | î ;
+<valor> ::= int | float | string | true | false ;
+
+<declaracaoVariavel> ::= <listaIdentificadores> ;
+
+<comando> ::= <atribuicao> | <entradaDados> | <saidaDados> | <selecao> | <repeticao> ;
+
+<atribuicao> ::= <listaIdentificadores> "=" <expressao> ;
+
+<entradaDados> ::= in "(" <listaEntrada> ")" ;
+<listaEntrada> ::= string <listaIdentificadores>  <listaEntrada1> | <listaIdentificadores>  <listaEntrada1> ;
+<listaEntrada1> ::= ";" <listaEntrada> | î ;
+
+<saidaDados> ::= out "(" <listaExpressoes> ")" ;
+<listaExpressoes> ::= <expressao> <listaExpressoes1> ;
+<listaExpressoes1> ::= "," <listaExpressoes> | î ;
+
+<selecao> ::= if "(" <expressao> ")" "{" <listaComandos> "}" <selecao1> ;
+<selecao1> ::=  else "{" <listaComandos> "}" | î ;
+<listaComandos> ::= <comando> <listaComandos1> ;
+<listaComandos1> ::= <listaComandos> | î ;
+
+
+<repeticao> ::= while "(" <expressao> ")" do "{" <listaComandos> "}" | repeat "{" <listaComandos> "}" while "(" <expressao> ")" ;
