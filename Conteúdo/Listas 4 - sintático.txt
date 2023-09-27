@@ -1,0 +1,46 @@
+Exemplo 2:
+S -> aB | aC | dS
+B -> bB | b
+C -> cC | c
+
+S  -> aS¹ | dS
+S¹ -> B | C
+B  -> bB¹
+B¹ -> B | ε
+C  -> cC¹
+C¹ -> C | ε
+
+Exercício 1:
+A -> aBd | aBC | d | dB | c
+B -> bB | b
+c -> cC | ε
+
+A  -> aBA¹ | dA² | c
+A¹ -> d | C
+A² -> ε | B
+B  -> bB¹
+B¹ -> B | ε
+c -> cC | ε
+
+Exercício 2:
+S -> BCd | BCe
+B -> bB | ε
+c -> cC | c
+
+S  -> BCS¹
+S¹ -> d | e
+B  -> bB | ε
+C  -> cC¹
+C¹ -> C | ε
+
+Exercício 3:
+S -> aB | aC | dS
+B -> bB | b
+C -> cC | c
+
+S  -> aS¹ | dS
+S¹ -> B | C
+B  -> bB¹
+B¹ -> B | ε
+C  -> cC¹
+C¹ -> C | ε

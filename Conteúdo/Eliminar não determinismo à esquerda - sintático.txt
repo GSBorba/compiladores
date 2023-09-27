@@ -1,0 +1,126 @@
+Eliminar não determinismo à esquerda
+A -> Be | C | cBC | a
+B -> abB | ab | dB
+C -> acC | ac | d
+
+O B e o C são um não determinismo direto, então:
+
+A  -> Be | C | cBC | a
+B  -> abB¹ | dB
+B¹ -> B | ε
+C  -> acC¹ | d
+C¹ -> C | ε
+
+porém agora da um não determinismo indireto por conta do a que aparece no A, B e C, então:
+
+em A
+- Trocar B por suas regras
+- Trocar C por suas regras
+- resolver o não detereminismo direto
+
+A  -> abB¹e | dBe | acC¹ | d | cBC | a
+
+agora basta resolver o não determinismo direto, que fica:
+
+A  -> aA¹ | dA² | cBC
+A¹ -> bB¹e | cC¹ | ε
+A² -> Be | ε
+B  -> abB¹ | dB
+B¹ -> B | ε
+C  -> acC¹ | d
+C¹ -> C | ε
+
+2)
+A -> aB | BC | a | ε
+B -> bB | a
+C -> cC | a
+
+resolver o não determinismo direto do A
+
+A  -> aA¹ | BC | ε
+A¹ -> B | ε
+
+resolver o não determinismo indireto do A
+
+A  -> aA¹ | bBC | aC | ε
+
+resolver o não determinismo direto do A
+
+A  -> aA² | bBC | ε
+A² -> A¹ | C
+
+resolver o não determinismo indireto do A²
+
+A² -> B | ε | C
+
+resolver o não determinismo indireto do A²
+
+A² -> bB | a | ε | cC
+
+Terminando em:
+
+A  -> aA² | bBC | ε
+A² -> bB | a | ε | cC
+B  -> bB | a
+C  -> cC | a
+
+3)
+S -> aSBe | aSAe
+A -> aA | cA | ε
+b -> bB | cB | ε
+
+S  -> aSS¹
+S¹ -> Be | Ae
+
+S¹ -> bBe | cBe | e | aAe | cAe
+
+S¹ -> bBe | cS² | e | aAe
+S² -> Be | Ae
+
+se tornou impossível eliminar o não determinismo, pois o S² chegou no mesmo estado do S original.
+
+4)
+A -> B | C
+B -> aDB | aD | b
+C -> acC | ac
+D -> dD | e
+
+B  -> aDB¹ | b
+B¹ -> B | ε
+C  -> acC¹
+C¹ -> C | ε
+
+A  -> aDB¹ | b | acC¹
+
+A  -> aA¹ | b
+A¹ -> DB¹ | cC¹
+B  -> aDB¹ | b
+B¹ -> B | ε
+C  -> acC¹
+C¹ -> C | ε
+D -> dD | e
+
+5)
+S -> aA | aBc
+A -> aA | bB
+B -> abB | ε
+
+S  -> aS¹
+S¹ -> A | Bc
+
+S¹ -> aA | bB | abB | ε
+
+S¹-> aS² | bB | ε
+S² -> A | bB
+
+S² -> aA | bB | bBc
+
+S² -> aA | bBS³
+S³ -> ε | c
+
+S  -> aS¹
+S¹ -> aS² | bB | ε
+S² -> aA | bBS³
+S³ -> ε | c
+A  -> aA | bB
+B  -> abB | ε
