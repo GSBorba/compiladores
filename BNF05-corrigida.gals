@@ -119,7 +119,7 @@ while = reservada: "while"
 <formaGeral> ::= fun main "{" <listaInstrucoes> "}" ;
 
 <listaInstrucoes> ::= <instrucao> ";" <listaInstrucoes1> ; 
-<listaInstrucoes1> ::= <listaInstrucoes> | Ã® ;
+<listaInstrucoes1> ::= <listaInstrucoes> | î ;
 
 <instrucao> ::= <listaIdentificadores> <instrucao1>
 	     	| <entradaDados> 
@@ -127,49 +127,49 @@ while = reservada: "while"
 		| <selecao> 
 		| <repeticao> ;
 
-<instrucao1> ::= <declaracaoConstate> | Ã® | <atribuicao> ;
+<instrucao1> ::= <declaracaoConstate> | î | "=" <expressao> ;
 
 <declaracaoConstate> ::= ":" <valor> ;
 
 <listaIdentificadores> ::= identificador <listaIdentificadores1> ;
-<listaIdentificadores1> ::= "," <listaIdentificadores> | Ã® ;
+<listaIdentificadores1> ::= "," <listaIdentificadores> | î ;
 <valor> ::= int | float | string | true | false ;
 
 <comando> ::= <atribuicao> | <entradaDados> | <saidaDados> | <selecao> | <repeticao> ;
 
-<atribuicao> ::= "=" <expressao> ;
+<atribuicao> ::= <listaIdentificadores> "=" <expressao> ;
 
 <entradaDados> ::= in "(" <listaEntrada> ")" ;
 
 <listaEntrada> ::= string "," <listaIdentificadores>  <listaEntrada1> | <listaIdentificadores>  <listaEntrada1> ;
-<listaEntrada1> ::= ";" <listaEntrada> | Ã® ;
+<listaEntrada1> ::= ";" <listaEntrada> | î ;
 
 <saidaDados> ::= out "(" <listaExpressoes> ")" ;
 <listaExpressoes> ::= <expressao> <listaExpressoes1> ;
-<listaExpressoes1> ::= "," <listaExpressoes> | Ã® ;
+<listaExpressoes1> ::= "," <listaExpressoes> | î ;
 
 <selecao> ::= if "(" <expressao> ")" "{" <listaComandos> "}" <selecao1> ;
-<selecao1> ::=  else "{" <listaComandos> "}" | Ã® ;
+<selecao1> ::=  else "{" <listaComandos> "}" | î ;
 
 <listaComandos> ::= <comando> ";" <listaComandos1> ;
-<listaComandos1> ::= <listaComandos> | Ã® ;
+<listaComandos1> ::= <listaComandos> | î ;
 
 
 <repeticao> ::= while "(" <expressao> ")" do "{" <listaComandos> "}" | repeat "{" <listaComandos> "}" while "(" <expressao> ")" ;
 
 <expressao>			::= <elemento> <expressao_>  ;
-<expressao_>			::= Ã® | "&" <elemento> <expressao_> | "|" <elemento> <expressao_> ;
+<expressao_>			::= î | "&" <elemento> <expressao_> | "|" <elemento> <expressao_> ;
 <elemento>			::= <relacional> | true | false | "!" <elemento> ;
 
 <relacional>			::= <aritmetica> <relacional_> ;
-<relacional_>			::= Ã® | <operador_relacional> <aritmetica> ;
+<relacional_>			::= î | <operador_relacional> <aritmetica> ;
 <operador_relacional>	::= "==" | "!=" | "<" | ">" ;
 
 <aritmetica>			::= <termo> <aritmetica_>  ;
-<aritmetica_>			::= Ã® | "+" <termo> <aritmetica_> | "-" <termo> <aritmetica_> ;
+<aritmetica_>			::= î | "+" <termo> <aritmetica_> | "-" <termo> <aritmetica_> ;
 
 <termo>			::= <fator> <termo_> ;
-<termo_>			::= Ã® | "*" <fator> <termo_> | "/" <fator> <termo_> ;
+<termo_>			::= î | "*" <fator> <termo_> | "/" <fator> <termo_> ;
 
 <fator>			::= identificador | 
 			    	    int | 
@@ -178,4 +178,3 @@ while = reservada: "while"
 		   	    	    "(" <expressao> ")" |
 	    	  	    	    "+" <fator> | 
 	    		    	    "-" <fator> ;
-

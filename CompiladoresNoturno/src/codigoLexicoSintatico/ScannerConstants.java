@@ -1025,10 +1025,10 @@ public interface ScannerConstants
 
     String[] SCANNER_ERROR =
     {
-        "símbolo invalido",
+        "simbolo invalido",
         "",
         "",
-        "identificador invalido",
+        "constante_string invalida",
         "",
         "",
         "",

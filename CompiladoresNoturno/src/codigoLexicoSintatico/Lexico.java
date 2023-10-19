@@ -4,35 +4,35 @@ public class Lexico implements Constants
 {
     private int position;
     private String input;
-    private int linha = 1;
-    private String lexema;
-    private int oldPosition = -1;
-    
-    public String getLexema() {
-    	return lexema;
-    }
-    
-    private void setLinha() {
-    	linha++;
-    }
-    
-    public int getLinha() {
-    	return linha;
-    }
 
     public Lexico()
     {
-        this("");
+        this(new java.io.StringReader(""));
     }
 
-    public Lexico(String input)
+    public Lexico(java.io.Reader input)
     {
         setInput(input);
     }
 
-    public void setInput(String input)
+    public void setInput(java.io.Reader input)
     {
-        this.input = input;
+        StringBuffer bfr = new StringBuffer();
+        try
+        {
+            int c = input.read();
+            while (c != -1)
+            {
+                bfr.append((char)c);
+                c = input.read();
+            }
+            this.input = bfr.toString();
+        }
+        catch (java.io.IOException e)
+        {
+            e.printStackTrace();
+        }
+
         setPosition(0);
     }
 
@@ -70,11 +70,8 @@ public class Lexico implements Constants
                 }
             }
         }
-        if (endState < 0 || (endState != state && tokenForState(lastState) == -2)) {
-        	end = position;
-        	lexema = input.substring(start, end);
+        if (endState < 0 || (endState != state && tokenForState(lastState) == -2))
             throw new LexicalError(SCANNER_ERROR[lastState], start);
-        }
 
         position = end;
 
@@ -85,7 +82,6 @@ public class Lexico implements Constants
         else
         {
             String lexeme = input.substring(start, end);
-            lexema = lexeme;
             token = lookupToken(token, lexeme);
             return new Token(token, lexeme, start);
         }
@@ -147,14 +143,8 @@ public class Lexico implements Constants
 
     private char nextChar()
     {
-        if (hasInput()) {
-        	//gambiarra q não funciona :)
-        	if(input.charAt(position) == '\n' && oldPosition != position) {
-        		oldPosition = position;
-            	setLinha();
-            }
+        if (hasInput())
             return input.charAt(position++);
-        }
         else
             return (char) -1;
     }
