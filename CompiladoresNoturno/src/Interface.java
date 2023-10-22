@@ -55,6 +55,18 @@ public class Interface extends JFrame {
 			}
 		});
 	}
+	
+	public int getLinha(int posicao) {
+		String s = textArea.getText();
+		int linha = 1;
+		
+		for(int i = 0; i <= posicao; i++) {
+			if(s.charAt(i) == '\n') {
+				linha++;
+			}
+		}
+		return linha;
+	}
 
 	public Interface() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -272,15 +284,15 @@ public class Interface extends JFrame {
 				catch ( LexicalError ex )
 				{
 					if(ex.getMessage() == "constante_string invalida" || ex.getMessage() == "comentario de bloco invalido ou nao finalizado") {
-						txtAreaMsg.setText("Linha " + ex.getPosition() + ": " +  ex.getMessage());
+						txtAreaMsg.setText("Linha " + getLinha(ex.getPosition()) + ": " +  ex.getMessage());
 					}else {
-						txtAreaMsg.setText("Linha " + ex.getPosition() + ": " + ex.getPosition() + " " + ex.getMessage());
+						txtAreaMsg.setText("Linha " + getLinha(ex.getPosition()) + ": " + getLinha(ex.getPosition()) + " " + ex.getMessage());
 					}
 					//Trata erros léxicos, conforme especificação da parte 2 - do compilador
 				}
 				catch ( SyntaticError e2 )
 				{
-					txtAreaMsg.setText("Erro na linha " + e2.getPosition() + " - encontrado " + sintatico.getLexema() + " esperado " + e2.getMessage()); 
+					txtAreaMsg.setText("Erro na linha " + getLinha(e2.getPosition()) + " - encontrado " + sintatico.getLexema() + " esperado " + e2.getMessage()); 
 					 
 					//Trata erros sintáticos
 					//linha 				sugestão: converter getPosition em linha
