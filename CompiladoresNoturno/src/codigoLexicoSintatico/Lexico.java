@@ -4,6 +4,11 @@ public class Lexico implements Constants
 {
     private int position;
     private String input;
+    private String lexema;
+    
+    public String getLexema() {
+    	return lexema;
+    }
 
     public Lexico()
     {
@@ -70,8 +75,15 @@ public class Lexico implements Constants
                 }
             }
         }
-        if (endState < 0 || (endState != state && tokenForState(lastState) == -2))
+        if (endState < 0 || (endState != state && tokenForState(lastState) == -2)) {
+        	//Gambiarra mas funciona
+        	while(input.charAt(position) != ' ' && input.charAt(position) != ',' && input.charAt(position) != ';' && input.charAt(position) != '=' && input.charAt(position) != ':' && input.charAt(position) != ')' && input.charAt(position) != '\n') {
+        		position++;
+        	}
+        	end = position;
+        	lexema = input.substring(start, end);
             throw new LexicalError(SCANNER_ERROR[lastState], start);
+        }
 
         position = end;
 

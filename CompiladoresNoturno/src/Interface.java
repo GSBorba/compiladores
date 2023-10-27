@@ -142,6 +142,7 @@ public class Interface extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
                 Component frame = null;
+                txtAreaMsg.setText("");
 				if (!txtpnNomeDoPrograma.getText().isEmpty()) {
 					File selectedFile = new File(txtpnNomeDoPrograma.getText());
 					if (selectedFile.exists()) {
@@ -284,9 +285,9 @@ public class Interface extends JFrame {
 				catch ( LexicalError ex )
 				{
 					if(ex.getMessage() == "constante_string invalida" || ex.getMessage() == "comentario de bloco invalido ou nao finalizado") {
-						txtAreaMsg.setText("Linha " + getLinha(ex.getPosition()) + ": " +  ex.getMessage());
+						txtAreaMsg.setText("Linha " + getLinha(ex.getPosition()) + ": " + ex.getMessage());
 					}else {
-						txtAreaMsg.setText("Linha " + getLinha(ex.getPosition()) + ": " + getLinha(ex.getPosition()) + " " + ex.getMessage());
+						txtAreaMsg.setText("Linha " + getLinha(ex.getPosition()) + ": " + lexico.getLexema() + " " + ex.getMessage());
 					}
 					//Trata erros léxicos, conforme especificação da parte 2 - do compilador
 				}
