@@ -10,6 +10,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.StringReader;
 
 import javax.swing.AbstractAction;
@@ -278,6 +279,18 @@ public class Interface extends JFrame {
 				try
 				{
 					sintatico.parse(lexico, semantico);    // tradução dirigida pela sintaxe
+					String caminho = txtpnNomeDoPrograma.getText();
+					caminho = caminho.split(".txt")[0];
+					caminho += ".il";
+					
+					try {
+						BufferedWriter writerIl = new BufferedWriter(new FileWriter(caminho));
+						writerIl.write(semantico.codigoObjeto);
+						writerIl.close();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					txtAreaMsg.setText("programa compilado com sucesso");
 				}
 				// mensagem: programa compilado com sucesso - área reservada para mensagens
