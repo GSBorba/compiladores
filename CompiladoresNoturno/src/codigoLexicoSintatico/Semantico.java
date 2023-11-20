@@ -16,21 +16,21 @@ public class Semantico implements Constants
 		case 100: this.acao100();	break;
 		case 101: this.acao101();	break;
 		case 102: this.acao102();	break;
-		case 103:	break;
-		case 104:	break;
-		case 105:	break;
-		case 106:	break;
-		case 107:	break;
-		case 108:	break;
-		case 109:	break;
-		case 110:	break;
-		case 111:	break;
-		case 112:	break;
-		case 113:	break;
+		case 103: this.acao103();	break;
+		case 104: this.acao104();	break;
+		case 105: this.acao105();	break;
+		case 106: this.acao106();	break;
+		case 107: this.acao107();	break;
+		case 108: this.acao108(token);	break;
+		case 109: this.acao109();	break;
+		case 110: this.acao110();	break;
+		case 111: this.acao111();	break;
+		case 112: this.acao112();	break;
+		case 113: this.acao113();	break;
 		case 114: this.acao114(token);	break;
 		case 115: this.acao115(token);	break;
-		case 116:	break;
-		case 117:	break;
+		case 116: this.acao116(token);	break;
+		case 117: this.acao117();	break;
 		default:
 			System.out.println("Não implementado!");
 			break;
@@ -59,10 +59,120 @@ public class Semantico implements Constants
     	String valor = this.pilhaTipos.pop();
     	
     	if (valor == "int64") {
-    		this.codigoObjeto += "conv.i8\n";
+    		this.codigoObjeto += "conv.i8" + "\n";
 		}
     	
-    	this.codigoObjeto += "call void [mscorlib]System.Console::WriteLine(" + valor + ")\n";
+    	this.codigoObjeto += "call void [mscorlib]System.Console::WriteLine(" + valor + ")" + "\n";
+    }
+    
+    private void acao103() {
+    	this.pilhaTipos.pop();
+    	this.pilhaTipos.pop();
+    	
+    	this.codigoObjeto += "and" + "\n";
+    	
+    	this.pilhaTipos.push("bool");
+    }
+    
+    private void acao104(){
+    	String valor1 = this.pilhaTipos.pop();
+    	String valor2 = this.pilhaTipos.pop();
+    	
+    	this.codigoObjeto += "or" + "\n";
+    	
+    	this.pilhaTipos.push("bool");
+    }
+    
+    private void acao105() {
+    	this.pilhaTipos.push("bool");
+    	this.codigoObjeto += "ldc.r4.1" + "\n";
+    }
+    
+    private void acao106() {
+    	this.pilhaTipos.push("bool");
+    	this.codigoObjeto += "ldc.r4.0" + "\n";
+    }
+    
+    private void acao107() {
+    	
+    }
+    
+    private void acao108(Token token) {
+    	this.operadorRelacional = token.getLexeme();
+    }
+    
+    private void acao109(){ //Verificar se precisa de verificação de Tipos iguais
+    	this.pilhaTipos.pop();
+    	this.pilhaTipos.pop();
+    	
+    	if(operadorRelacional.equals("==")) {
+    		this.codigoObjeto += "ceq" + "\n";
+    	} else if(operadorRelacional.equals("!=")) {
+    		this.codigoObjeto += "ceq" + "\n"
+    				+ "xor" + "\n";
+    	} else if(operadorRelacional.equals(">")) {
+    		this.codigoObjeto += "cgt" + "\n";
+    	} else {
+    		this.codigoObjeto += "clt" + "\n";
+    	}
+    	
+    	this.pilhaTipos.push("bool");
+    }
+    
+    private void acao110() {//Verificar se precisa de verificação de Tipos iguais
+    	String valor1 = this.pilhaTipos.pop();
+    	String valor2 = this.pilhaTipos.pop();
+    	
+    	if(valor1 == "float64" || valor2 == "float64") {
+    		this.pilhaTipos.push("float64");
+    	} else {
+    		this.pilhaTipos.push("int64");
+    	}
+    	
+    	this.codigoObjeto += "add" + "\n";
+    }
+    
+    private void acao111() {//Verificar se precisa de verificação de Tipos iguais
+    	String valor1 = this.pilhaTipos.pop();
+    	String valor2 = this.pilhaTipos.pop();
+    	
+    	if(valor1 == "float64" || valor2 == "float64") {
+    		this.pilhaTipos.push("float64");
+    	} else {
+    		this.pilhaTipos.push("int64");
+    	}
+    	
+    	this.codigoObjeto += "sub" + "\n";
+    }
+    
+    private void acao112() {//Verificar se precisa de verificação de Tipos iguais
+    	String valor1 = this.pilhaTipos.pop();
+    	String valor2 = this.pilhaTipos.pop();
+    	
+    	if(valor1 == "float64" || valor2 == "float64") {
+    		this.pilhaTipos.push("float64");
+    	} else {
+    		this.pilhaTipos.push("int64");
+    	}
+    	
+    	this.codigoObjeto += "mul" + "\n";
+    }
+    
+    private void acao113() throws SemanticError{
+    	String valor1 = this.pilhaTipos.pop();
+    	String valor2 = this.pilhaTipos.pop();
+    	
+    	if(valor1 != valor2) {
+    		throw new SemanticError("F");
+    	}
+    	
+    	this.codigoObjeto += "div" + "\n";
+    	
+    	if(valor1 == "float64" || valor2 == "float64") {
+    		this.pilhaTipos.push("float64");
+    	} else {
+    		this.pilhaTipos.push("int64");
+    	}
     }
     
     private void acao114(Token token) {
@@ -71,8 +181,17 @@ public class Semantico implements Constants
     			+ "conv.r8" + "\n";
     }
     
-    private void acao115(Token token) {
+    private void acao115(Token token) {//Verificar se precisa trocar 
     	this.pilhaTipos.push("float64");
     	this.codigoObjeto += "ldc.r8 " + token.getLexeme() + "\n";
+    }
+    
+    private void acao116(Token token) {
+    	this.pilhaTipos.push("string");
+    	this.codigoObjeto += "ldstr " + token.getLexeme() + "\n";
+    }
+    
+    private void acao117() {
+    	
     }
 }
