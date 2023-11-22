@@ -315,7 +315,7 @@ public class Interface extends JFrame {
 				}
 				catch ( SemanticError e3 )
 				{
-					//Trata erros semânticos
+					txtAreaMsg.setText("Erro na linha " + getLinha(e3.getPosition()) + " - encontrado " + sintatico.getLexema());
 				}
 			}
 		});

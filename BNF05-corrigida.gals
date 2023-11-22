@@ -8,7 +8,7 @@ SemanticName = Semantico
 Package = codigoLexicoSintatico
 ScannerCaseSensitive = true
 ScannerTable = Compact
-Input = Stream
+Input = String
 Parser = LL
 #RegularDefinitions
 prefixo: "_" (i|f|b|s)
@@ -116,10 +116,10 @@ while = reservada: "while"
 
 <instrucao1>
 #Grammar
-<formaGeral> ::= fun main "{" <listaInstrucoes> "}" ;
+<formaGeral> ::= #100 fun main "{" <listaInstrucoes> "}" #101 ;
 
 <listaInstrucoes> ::= <instrucao> ";" <listaInstrucoes1> ; 
-<listaInstrucoes1> ::= <listaInstrucoes> | î ;
+<listaInstrucoes1> ::= <listaInstrucoes> | Ã® ;
 
 <instrucao> ::= <listaIdentificadores> <instrucao1>
 	     	| <entradaDados> 
@@ -127,12 +127,12 @@ while = reservada: "while"
 		| <selecao> 
 		| <repeticao> ;
 
-<instrucao1> ::= <declaracaoConstate> | î | "=" <expressao> ;
+<instrucao1> ::= <declaracaoConstate> | Ã® | "=" <expressao> ;
 
 <declaracaoConstate> ::= ":" <valor> ;
 
 <listaIdentificadores> ::= identificador <listaIdentificadores1> ;
-<listaIdentificadores1> ::= "," <listaIdentificadores> | î ;
+<listaIdentificadores1> ::= "," <listaIdentificadores> | Ã® ;
 <valor> ::= int | float | string | true | false ;
 
 <comando> ::= <atribuicao> | <entradaDados> | <saidaDados> | <selecao> | <repeticao> ;
@@ -142,39 +142,39 @@ while = reservada: "while"
 <entradaDados> ::= in "(" <listaEntrada> ")" ;
 
 <listaEntrada> ::= string "," <listaIdentificadores>  <listaEntrada1> | <listaIdentificadores>  <listaEntrada1> ;
-<listaEntrada1> ::= ";" <listaEntrada> | î ;
+<listaEntrada1> ::= ";" <listaEntrada> | Ã® ;
 
 <saidaDados> ::= out "(" <listaExpressoes> ")" ;
-<listaExpressoes> ::= <expressao> <listaExpressoes1> ;
-<listaExpressoes1> ::= "," <listaExpressoes> | î ;
+<listaExpressoes> ::= <expressao> #102 <listaExpressoes1> ;
+<listaExpressoes1> ::= "," <listaExpressoes> | Ã® ;
 
 <selecao> ::= if "(" <expressao> ")" "{" <listaComandos> "}" <selecao1> ;
-<selecao1> ::=  else "{" <listaComandos> "}" | î ;
+<selecao1> ::=  else "{" <listaComandos> "}" | Ã® ;
 
 <listaComandos> ::= <comando> ";" <listaComandos1> ;
-<listaComandos1> ::= <listaComandos> | î ;
+<listaComandos1> ::= <listaComandos> | Ã® ;
 
 
 <repeticao> ::= while "(" <expressao> ")" do "{" <listaComandos> "}" | repeat "{" <listaComandos> "}" while "(" <expressao> ")" ;
 
 <expressao>			::= <elemento> <expressao_>  ;
-<expressao_>			::= î | "&" <elemento> <expressao_> | "|" <elemento> <expressao_> ;
-<elemento>			::= <relacional> | true | false | "!" <elemento> ;
+<expressao_>			::= Ã® | "&" <elemento> #103 <expressao_> | "|" <elemento> #104 <expressao_> ;
+<elemento>			::= <relacional> | true #105 | false #106 | "!" <elemento> #107 ;
 
 <relacional>			::= <aritmetica> <relacional_> ;
-<relacional_>			::= î | <operador_relacional> <aritmetica> ;
+<relacional_>			::= Ã® | <operador_relacional> #108 <aritmetica> #109 ;
 <operador_relacional>	::= "==" | "!=" | "<" | ">" ;
 
 <aritmetica>			::= <termo> <aritmetica_>  ;
-<aritmetica_>			::= î | "+" <termo> <aritmetica_> | "-" <termo> <aritmetica_> ;
+<aritmetica_>			::= Ã® | "+" <termo> #110 <aritmetica_> | "-" <termo> #111 <aritmetica_> ;
 
 <termo>			::= <fator> <termo_> ;
-<termo_>			::= î | "*" <fator> <termo_> | "/" <fator> <termo_> ;
+<termo_>			::= Ã® | "*" <fator> #112 <termo_> | "/" <fator> #113 <termo_> ;
 
 <fator>			::= identificador | 
-			    	    int | 
-		   	    	    float | 
-			    	    string | 
+			    	    int #114 | 
+		   	    	    float #115 | 
+			    	    string #116 | 
 		   	    	    "(" <expressao> ")" |
 	    	  	    	    "+" <fator> | 
-	    		    	    "-" <fator> ;
+	    		    	    "-" <fator> #117 ;
