@@ -34,8 +34,9 @@ public class Sintatico implements Constants
         if (currentToken == null)
         {
             int pos = 0;
-            if (previousToken != null)
+            if (previousToken != null) {
                 pos = previousToken.getPosition()+previousToken.getLexeme().length();
+            }
 
             currentToken = new Token(DOLLAR, "$", pos);
         }
@@ -62,7 +63,14 @@ public class Sintatico implements Constants
             }
             else
             {
-                throw new SyntaticError(PARSER_ERROR[x], currentToken.getPosition());
+            	if(currentToken.getId() == 4) {
+            		currentToken = new Token(currentToken.getId(), "constante_int", currentToken.getPosition());
+            	}else if(currentToken.getId() == 5) {
+            		currentToken = new Token(currentToken.getId(), "constante_float", currentToken.getPosition());
+            	}else if(currentToken.getId() == 6) {
+            		currentToken = new Token(currentToken.getId(), "constante_string", currentToken.getPosition());
+            	}
+            		throw new SyntaticError(PARSER_ERROR[x], currentToken.getPosition());
             }
         }
         else if (isNonTerminal(x))
@@ -70,6 +78,9 @@ public class Sintatico implements Constants
             if (pushProduction(x, a))
                 return false;
             else
+            	if(currentToken.getLexeme().equals("$")) {
+            		currentToken = new Token(currentToken.getId(), "EOF", currentToken.getPosition());
+            	}
                 throw new SyntaticError(PARSER_ERROR[x], currentToken.getPosition());
         }
         else // isSemanticAction(x)

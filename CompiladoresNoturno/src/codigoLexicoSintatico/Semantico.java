@@ -181,12 +181,8 @@ public class Semantico implements Constants
     }
     
     private void acao113() throws SemanticError{
-    	String valor1 = this.pilhaTipos.pop();
-    	String valor2 = this.pilhaTipos.pop();
-    	
-    	if(valor1 != valor2) {
-    		throw new SemanticError("F"); //Arrumar mensagem de Erro
-    	}
+    	String tipo1 = this.pilhaTipos.pop();
+    	String tipo2 = this.pilhaTipos.pop();
     	
     	this.codigoObjeto += "div" + "\n";
     	
@@ -226,7 +222,7 @@ public class Semantico implements Constants
 	   this.pilhaRotulos.add(novoRotulo1);
    }
    
-   private void acao119() { //Talvez isso de erro :)
+   private void acao119() {
 	   String novoRotulo = this.pilhaRotulos.pop();
 	   this.codigoObjeto += novoRotulo + ":" + "\n";
    }
@@ -248,7 +244,7 @@ public class Semantico implements Constants
    private void acao122(Token token) throws SemanticError {
 	   String tipoExpressao = this.pilhaTipos.pop();
 	   if (!tipoExpressao.equals("bool")) {
-		   throw new SemanticError("expressão incompatível em comando de seleção;", token.getPosition());
+		   throw new SemanticError("expressão incompatível em comando de repetição;", token.getPosition());
 	   }
 	   String novoRotulo2 = "novo_rotulo2";
 	   this.codigoObjeto += "brfalse" + novoRotulo2 + "\n";
@@ -265,7 +261,7 @@ public class Semantico implements Constants
    private void acao124(Token token) throws SemanticError {
 	   String tipoExpressao = this.pilhaTipos.pop();
 	   if (!tipoExpressao.equals("bool")) {
-		   throw new SemanticError("expressão incompatível em comando de seleção;", token.getPosition());
+		   throw new SemanticError("expressão incompatível em comando de repetição;", token.getPosition());
 	   }
 	   String novoRotulo1 = "novo_rotulo1";
 	   this.codigoObjeto += "brtrue" + novoRotulo1 + "\n";
@@ -279,7 +275,7 @@ public class Semantico implements Constants
 	   for (int i = 0; i < listaId.size(); i++) {
 		   String identificador = listaId.get(i);
 		   if (tabelaSimbolos.get(identificador) != null) {
-			   throw new SemanticError(token.getLexeme()); //Arrumar mensagem de Erro
+			   throw new SemanticError(token.getLexeme() + " já declarado;", token.getPosition());
 		   }
 			
 		   String[][] arrayString = new String[1][1];
@@ -294,7 +290,7 @@ public class Semantico implements Constants
 	   for (int i = 0; i < listaId.size(); i++) {
 		   String identificador = listaId.get(i);
 		   if (tabelaSimbolos.get(identificador) != null) {
-			   throw new SemanticError(token.getLexeme()); //Arrumar mensagem de Erro
+			   throw new SemanticError(token.getLexeme() + " já declarado;", token.getPosition());
 		   }
 			
 		   String[][] arrayString = new String[1][2];
@@ -314,7 +310,7 @@ public class Semantico implements Constants
 	   for (int i = 0; i < listaId.size(); i++) {
 		   String identificador = listaId.get(i);
 		   if (tabelaSimbolos.get(identificador) == null) {
-			   throw new SemanticError(token.getLexeme()); //Arrumar mensagem de Erro
+			   throw new SemanticError(identificador  + " não declarado;", token.getPosition());
 		   }
 		   
 		   if (tipoExpressao.equals("int64")) {
@@ -330,7 +326,7 @@ public class Semantico implements Constants
 			String identificador = this.listaId.get(i);
 			var tabela_simbolos = this.tabelaSimbolos.get(identificador);
 			if (tabela_simbolos == null) {
-				throw new SemanticError(token.getLexeme()); //Arrumar mensagem de Erro
+				throw new SemanticError(identificador  + " não declarado;", token.getPosition());
 			}
 			
 			if (tabela_simbolos[0][0] == "int64") {

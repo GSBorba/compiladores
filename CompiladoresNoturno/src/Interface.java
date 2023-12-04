@@ -274,7 +274,7 @@ public class Interface extends JFrame {
 				Sintatico sintatico = new Sintatico();
 				Semantico semantico = new Semantico();
 				//...
-				lexico.setInput(new StringReader(textArea.getText()));
+				lexico.setInput(new StringReader(textArea.getText()+" \n "));
 				//...
 				try
 				{
@@ -306,7 +306,7 @@ public class Interface extends JFrame {
 				}
 				catch ( SyntaticError e2 )
 				{
-					txtAreaMsg.setText("Erro na linha " + getLinha(e2.getPosition()) + " - encontrado " + sintatico.getLexema() + " esperado " + e2.getMessage()); 
+					txtAreaMsg.setText("Erro na linha " + getLinha(e2.getPosition()) + " - encontrado " + sintatico.getLexema() + " " + e2.getMessage()); 
 					 
 					//Trata erros sintáticos
 					//linha 				sugestão: converter getPosition em linha
@@ -315,7 +315,7 @@ public class Interface extends JFrame {
 				}
 				catch ( SemanticError e3 )
 				{
-					txtAreaMsg.setText("Erro na linha " + getLinha(e3.getPosition()) + " - encontrado " + sintatico.getLexema());
+					txtAreaMsg.setText("Erro na linha " + getLinha(e3.getPosition()) + " - " + e3.getMessage());
 				}
 			}
 		});
