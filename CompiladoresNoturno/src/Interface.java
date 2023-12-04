@@ -297,7 +297,7 @@ public class Interface extends JFrame {
 				
 				catch ( LexicalError ex )
 				{
-					if(ex.getMessage() == "constante_string invalida" || ex.getMessage() == "comentario de bloco invalido ou nao finalizado") {
+					if(ex.getMessage().equals("constante_string invalida") || ex.getMessage().equals("comentario de bloco invalido ou nao finalizado")) {
 						txtAreaMsg.setText("Linha " + getLinha(ex.getPosition()) + ": " + ex.getMessage());
 					}else {
 						txtAreaMsg.setText("Linha " + getLinha(ex.getPosition()) + ": " + lexico.getLexema() + " " + ex.getMessage());

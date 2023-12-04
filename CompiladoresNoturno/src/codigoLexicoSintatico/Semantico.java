@@ -1,8 +1,7 @@
 package codigoLexicoSintatico;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
@@ -13,9 +12,8 @@ public class Semantico implements Constants
 	public String codigoObjeto = "";
 	private String operadorRelacional = "";
 	private Stack<String> pilhaRotulos = new Stack<>();
-	private List<String> listaId;
+	private List<String> listaId = new ArrayList<String>();
 	private HashMap<String, String[][]> tabelaSimbolos = new HashMap();
-	private HashMap<String, Boolean> ieVariavel = new HashMap();
 	
     public void executeAction(int action, Token token)	throws SemanticError {
     	
@@ -39,13 +37,13 @@ public class Semantico implements Constants
 		case 115: this.acao115(token);	break;
 		case 116: this.acao116(token);	break;
 		case 117: this.acao117(token);	break;
-		case 118: this.acao118();		break;
+		case 118: this.acao118(token);	break;
 		case 119: this.acao119();		break;
 		case 120: this.acao120();		break;
 		case 121: this.acao121();		break;
-		case 122: this.acao122();		break;
+		case 122: this.acao122(token);	break;
 		case 123: this.acao123();		break;
-		case 124: this.acao124();		break;
+		case 124: this.acao124(token);	break;
 		case 125: this.acao125(token);	break;
 		case 126: this.acao126(token);	break;
 		case 127: this.acao127(token);	break;
@@ -84,7 +82,7 @@ public class Semantico implements Constants
     		this.codigoObjeto += "conv.i8" + "\n";
 		}
     	
-    	this.codigoObjeto += "call void [mscorlib]System.Console::WriteLine(" + valor + ")" + "\n";
+    	this.codigoObjeto += "call void [mscorlib]System.Console::Write(" + valor + ")" + "\n";
     }
     
     private void acao103() {
@@ -218,10 +216,10 @@ public class Semantico implements Constants
 				+ "mul" + "\n";
    }
    
-   private void acao118() throws SemanticError {
+   private void acao118(Token token) throws SemanticError {
 	   String tipoExpressao = this.pilhaTipos.pop();
 	   if (!tipoExpressao.equals("bool")) {
-		   throw new SemanticError("expressão incompatível em comando de seleção;");
+		   throw new SemanticError("expressão incompatível em comando de seleção;", token.getPosition());
 	   }
 	   String novoRotulo1 = "novo_rotulo1";
 	   this.codigoObjeto += "brfalse" + novoRotulo1 + "\n";
@@ -247,10 +245,10 @@ public class Semantico implements Constants
 	   this.pilhaRotulos.add(novoRotulo1);
    }
    
-   private void acao122() throws SemanticError {
+   private void acao122(Token token) throws SemanticError {
 	   String tipoExpressao = this.pilhaTipos.pop();
 	   if (!tipoExpressao.equals("bool")) {
-		   throw new SemanticError("expressão incompatível em comando de seleção;");
+		   throw new SemanticError("expressão incompatível em comando de seleção;", token.getPosition());
 	   }
 	   String novoRotulo2 = "novo_rotulo2";
 	   this.codigoObjeto += "brfalse" + novoRotulo2 + "\n";
@@ -264,10 +262,10 @@ public class Semantico implements Constants
 			   + novoRotulo2 + ":" + "\n";
    }
    
-   private void acao124() throws SemanticError {
+   private void acao124(Token token) throws SemanticError {
 	   String tipoExpressao = this.pilhaTipos.pop();
 	   if (!tipoExpressao.equals("bool")) {
-		   throw new SemanticError("expressão incompatível em comando de seleção;");
+		   throw new SemanticError("expressão incompatível em comando de seleção;", token.getPosition());
 	   }
 	   String novoRotulo1 = "novo_rotulo1";
 	   this.codigoObjeto += "brtrue" + novoRotulo1 + "\n";
@@ -278,7 +276,7 @@ public class Semantico implements Constants
    }
    
    private void acao126(Token token) throws SemanticError {
-	   for (int i = 0; i < listaId.size()-1; i++) {
+	   for (int i = 0; i < listaId.size(); i++) {
 		   String identificador = listaId.get(i);
 		   if (tabelaSimbolos.get(identificador) != null) {
 			   throw new SemanticError(token.getLexeme()); //Arrumar mensagem de Erro
@@ -293,7 +291,7 @@ public class Semantico implements Constants
    }
    
    private void acao127(Token token) throws SemanticError {
-	   for (int i = 0; i < listaId.size()-1; i++) {
+	   for (int i = 0; i < listaId.size(); i++) {
 		   String identificador = listaId.get(i);
 		   if (tabelaSimbolos.get(identificador) != null) {
 			   throw new SemanticError(token.getLexeme()); //Arrumar mensagem de Erro
@@ -301,9 +299,9 @@ public class Semantico implements Constants
 			
 		   String[][] arrayString = new String[1][2];
 		   arrayString[0][0] = retornaTipoIdentificador(identificador);
-		   arrayString[0][1] = token.getLexeme();
+		   arrayString[0][1] = identificador;
 		   tabelaSimbolos.put(identificador, arrayString);
-		   this.codigoObjeto += ".locals (" + tabelaSimbolos.get(identificador)[0][0] + " " + identificador + ")" + "\n";
+		   this.codigoObjeto += ".locals init (" + tabelaSimbolos.get(identificador)[0][0] + " " + identificador + ")" + "\n";
 	   }
 	   listaId.removeAll(listaId);
    }
@@ -312,6 +310,8 @@ public class Semantico implements Constants
 	   String tipoExpressao = this.pilhaTipos.pop();
 	   for (int i = 0; i < listaId.size()-1; i++) {
 		   this.codigoObjeto += "dup" + "\n";
+	   }
+	   for (int i = 0; i < listaId.size(); i++) {
 		   String identificador = listaId.get(i);
 		   if (tabelaSimbolos.get(identificador) == null) {
 			   throw new SemanticError(token.getLexeme()); //Arrumar mensagem de Erro
@@ -320,34 +320,39 @@ public class Semantico implements Constants
 		   if (tipoExpressao.equals("int64")) {
 			   this.codigoObjeto += "conv.i8" + "\n";
 		   }
-		   this.codigoObjeto += "stloc " + identificador;
-		   this.ieVariavel.put(identificador, true);
+		   this.codigoObjeto += "stloc " + identificador + "\n";
 	   }
 	   listaId.removeAll(listaId);
    }
    
    private void acao129(Token token) throws SemanticError {
-	   for (int i = 0; i < this.listaId.size()-1; i++) {
+	   for (int i = 0; i < this.listaId.size(); i++) {
 			String identificador = this.listaId.get(i);
 			var tabela_simbolos = this.tabelaSimbolos.get(identificador);
 			if (tabela_simbolos == null) {
 				throw new SemanticError(token.getLexeme()); //Arrumar mensagem de Erro
 			}
 			
-			if (tabela_simbolos[0][0] == "int64" || tabela_simbolos[0][0] == "float64" || tabela_simbolos[0][0] == "bool") {
-				this.codigoObjeto += "call string [mscorlib]System.Console::ReadLine()" + "\n"
-						+ "call <" + tabela_simbolos[0][0] + "> " + "[mscorlib]System.<classe>::Parse(string)" + "\n";
+			if (tabela_simbolos[0][0] == "int64") {
+				this.codigoObjeto += "call string [mscorlib]System.Console::ReadLine()" + "\n" 
+						+ "call " + tabela_simbolos[0][0] + " [mscorlib]System.Int64::Parse(string)" + "\n";
+			}else if(tabela_simbolos[0][0] == "float64"){
+				this.codigoObjeto += "call string [mscorlib]System.Console::ReadLine()" + "\n" 
+						+ "call " + tabela_simbolos[0][0] + " [mscorlib]System.Double::Parse(string)" + "\n";
+			}else if(tabela_simbolos[0][0] == "bool") {
+				this.codigoObjeto += "call string [mscorlib]System.Console::ReadLine()" + "\n" 
+						+ "call " + tabela_simbolos[0][0] + " [mscorlib]System.Boolean::Parse(string)" + "\n";
 			}else {
 				this.codigoObjeto += "call string [mscorlib]System.Console::ReadLine()" + "\n";
 			}
-			this.codigoObjeto += "strloc " + identificador + "\n";
+			this.codigoObjeto += "stloc " + identificador + "\n";
 	   }
 	   this.listaId.removeAll(listaId);
    }
    
    private void acao130(Token token) {
-	   this.codigoObjeto += "call string [mscorlib]System.Console::ReadLine()" + "\n"
-	   		+ "call string [mscorlib]System.Console::Write(string)" + "\n";
+	   this.codigoObjeto += "ldstr " + token.getLexeme() + "\n"
+	   		+ "call void [mscorlib]System.Console::Write(string)" + "\n";
    }
    
    private void acao131(Token token) throws SemanticError {
@@ -366,9 +371,9 @@ public class Semantico implements Constants
 		   }
 	   }
 	   if(!existe) {
-		   throw new SemanticError(token.getLexeme() + " não declarado");
+		   throw new SemanticError(token.getLexeme() + " não declarado", token.getPosition());
 	   }
-	   if(ieVariavel.get(identificador) != null) {
+	   if(tabelaSimbolos.get(identificador) != null) {
 		   this.codigoObjeto += "ldloc " + identificador + "\n";
 		   if(retornaTipoIdentificador(identificador).equals("int64")) {
 			   this.codigoObjeto += "conv.r8" + "\n";
@@ -377,7 +382,7 @@ public class Semantico implements Constants
 	   }else {
 		   if(tipo.equals("int64")) {
 			   this.codigoObjeto += "ldc.i8 " + valor + "\n"
-					   + "conv.r8";
+					   + "conv.r8" + "\n";
 		   }else if(tipo.equals("float64")) {
 			   this.codigoObjeto += "ldc.r8 " + valor + "\n";
 		   }else if(tipo.equals("string")) {
