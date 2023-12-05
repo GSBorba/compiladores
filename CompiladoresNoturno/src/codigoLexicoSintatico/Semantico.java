@@ -82,7 +82,7 @@ public class Semantico implements Constants
     		this.codigoObjeto += "conv.i8" + "\n";
 		}
     	
-    	this.codigoObjeto += "call void [mscorlib]System.Console::Write(" + valor + ")" + "\n";
+    	this.codigoObjeto += "call void [mscorlib]System.Console::WriteLine(" + valor + ")" + "\n";
     }
     
     private void acao103() {

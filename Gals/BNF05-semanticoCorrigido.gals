@@ -1,0 +1,180 @@
+#Options
+GenerateScanner = true
+GenerateParser = true
+Language = Java
+ScannerName = Lexico
+ParserName = Sintatico
+SemanticName = Semantico
+Package = codigoLexicoSintatico
+ScannerCaseSensitive = true
+ScannerTable = Compact
+Input = String
+Parser = LL
+#RegularDefinitions
+prefixo: "_" (i|f|b|s)
+
+inteiro: 0 | [1-9][0-9]*
+
+corpo: ([^\n\""\""%"]* | % (i|f|s|b))*
+#Tokens
+// EQUIPE: Andre Heller; Gabriel de Souza Borba; Henrique de Oliveira
+// NOTA: 9,5
+
+//palavra reservada
+reservada: [a-z]+
+
+//identificador
+identificador: {prefixo}([A-Z]([a-z0-9]+[A-Z]?)* | [a-z]([A-Z]?[a-z0-9])*[A-Z]?)
+
+//contante_int
+int: 0 | [1-9][0-9]*
+
+//constante_float
+float: {inteiro}"."[0-9]([0-9]*[1-9])?
+
+//constante_string
+string: \"{corpo}\"
+
+//relação das palavras reservadas
+//do else false fun if in main out repeat true while
+do = reservada: "do"
+else = reservada: "else"
+false = reservada: "false"
+fun = reservada: "fun"
+if = reservada: "if"
+in = reservada: "in"
+main = reservada: "main"
+out = reservada: "out"
+repeat = reservada: "repeat"
+true = reservada: "true"
+while = reservada: "while"
+
+//relação dos simbolos especiais
+//& | ! , ; = : ( ) { } == != < > + - * /
+"&"
+"|"
+"!"
+","
+";"
+"="
+":"
+"("
+")"
+"{"
+"}"
+"=="
+"!="
+"<"
+">"
+"+"
+"-"
+"*"
+"/"
+
+//reconhecer e ignorar caracteres de formatação
+:[\s\t\n\r]
+
+//reconhecer e ignorar comentários
+:! "#"[^\n]*
+:! "["[^\[\]]*"]"
+#NonTerminals
+<formaGeral>
+
+<listaInstrucoes>
+<instrucao>
+<declaracaoConstate>
+<listaIdentificadores>
+<valor>
+<comando>
+<atribuicao>
+<entradaDados>
+<saidaDados>
+<selecao>
+<repeticao>
+<listaEntrada>
+<listaComandos>
+<expressao>
+<listaExpressoes>
+
+<listaInstrucoes1>
+<listaIdentificadores1>
+<listaEntrada1>
+<listaExpressoes1>
+<selecao1>
+<listaComandos1>
+
+<elemento>
+<expressao_>
+<relacional>
+<relacional_>
+<aritmetica>
+<aritmetica_>
+<operador_relacional>
+<termo>
+<termo_>
+<fator>
+
+<instrucao1>
+#Grammar
+<formaGeral> ::= #100 fun main "{" <listaInstrucoes> "}" #101 ;
+
+<listaInstrucoes> ::= <instrucao> ";" <listaInstrucoes1> ; 
+<listaInstrucoes1> ::= <listaInstrucoes> | î ;
+
+<instrucao> ::= <listaIdentificadores> <instrucao1>
+	     	| <entradaDados> 
+		| <saidaDados> 
+		| <selecao> 
+		| <repeticao> ;
+
+<instrucao1> ::= <declaracaoConstate> #126 | #127 î | "=" <expressao> #128 ;
+
+<declaracaoConstate> ::= ":" <valor> ;
+
+<listaIdentificadores> ::= identificador #125 <listaIdentificadores1> ;
+<listaIdentificadores1> ::= "," <listaIdentificadores> | î ;
+<valor> ::= int | float | string | true | false ;
+
+<comando> ::= <atribuicao> | <entradaDados> | <saidaDados> | <selecao> | <repeticao> ;
+
+<atribuicao> ::= <listaIdentificadores> "=" <expressao> #128 ;
+
+<entradaDados> ::= in "(" <listaEntrada> ")" ;
+
+<listaEntrada> ::= string #130 "," <listaIdentificadores> #129 <listaEntrada1> | <listaIdentificadores> #129 <listaEntrada1> ;
+<listaEntrada1> ::= ";" <listaEntrada> | î ;
+
+<saidaDados> ::= out "(" <listaExpressoes> ")" ;
+<listaExpressoes> ::= <expressao> #102 <listaExpressoes1> ;
+<listaExpressoes1> ::= "," <listaExpressoes> | î ;
+
+<selecao> ::= if "(" <expressao> ")" #118 "{" <listaComandos> "}" <selecao1> #119 ;
+<selecao1> ::= #120 else "{" <listaComandos> "}" | î ;
+
+<listaComandos> ::= <comando> ";" <listaComandos1> ;
+<listaComandos1> ::= <listaComandos> | î ;
+
+
+<repeticao> ::= #121 while "(" <expressao> ")" #122 do "{" <listaComandos> "}" #123 | #121 repeat "{" <listaComandos> "}" while "(" <expressao> ")" #124 ;
+
+<expressao>			::= <elemento> <expressao_>  ;
+<expressao_>			::= î | "&" <elemento> #103 <expressao_> | "|" <elemento> #104 <expressao_> ;
+<elemento>			::= <relacional> | true #105 | false #106 | "!" <elemento> #107 ;
+
+<relacional>			::= <aritmetica> <relacional_> ;
+<relacional_>			::= î | <operador_relacional> #108 <aritmetica> #109 ;
+<operador_relacional>	::= "==" | "!=" | "<" | ">" ;
+
+<aritmetica>			::= <termo> <aritmetica_>  ;
+<aritmetica_>			::= î | "+" <termo> #110 <aritmetica_> | "-" <termo> #111 <aritmetica_> ;
+
+<termo>			::= <fator> <termo_> ;
+<termo_>			::= î | "*" <fator> #112 <termo_> | "/" <fator> #113 <termo_> ;
+
+<fator>			::= identificador #131 | 
+			    	    int #114 | 
+		   	    	    float #115 | 
+			    	    string #116 | 
+		   	    	    "(" <expressao> ")" |
+	    	  	    	    "+" <fator> | 
+	    		    	    "-" <fator> #117 ;

@@ -61,7 +61,7 @@ public class Interface extends JFrame {
 		String s = textArea.getText();
 		int linha = 1;
 		
-		for(int i = 0; i <= posicao; i++) {
+		for(int i = 0; i <= posicao - 1; i++) {
 			if(s.charAt(i) == '\n') {
 				linha++;
 			}
@@ -274,7 +274,7 @@ public class Interface extends JFrame {
 				Sintatico sintatico = new Sintatico();
 				Semantico semantico = new Semantico();
 				//...
-				lexico.setInput(new StringReader(textArea.getText()+" \n "));
+				lexico.setInput(new StringReader(textArea.getText()));
 				//...
 				try
 				{
@@ -298,9 +298,9 @@ public class Interface extends JFrame {
 				catch ( LexicalError ex )
 				{
 					if(ex.getMessage().equals("constante_string invalida") || ex.getMessage().equals("comentario de bloco invalido ou nao finalizado")) {
-						txtAreaMsg.setText("Linha " + getLinha(ex.getPosition()) + ": " + ex.getMessage());
+						txtAreaMsg.setText("Erro na linha " + getLinha(ex.getPosition()) + " - " + ex.getMessage());
 					}else {
-						txtAreaMsg.setText("Linha " + getLinha(ex.getPosition()) + ": " + lexico.getLexema() + " " + ex.getMessage());
+						txtAreaMsg.setText("Erro na linha " + getLinha(ex.getPosition()) + " - " + lexico.getLexema() + " " + ex.getMessage());
 					}
 					//Trata erros léxicos, conforme especificação da parte 2 - do compilador
 				}

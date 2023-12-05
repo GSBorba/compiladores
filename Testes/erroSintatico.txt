@@ -1,0 +1,5 @@
+fun main {
+_ilado;
+in ("digite um valor para lado: ", _ilado}
+_iarea = _ilado * _ilado;
+out (_iarea); }
